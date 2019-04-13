@@ -88,7 +88,13 @@ class Main extends egret.DisplayObjectContainer {
      */
     private createGameScene() {
       let startScene = new StartScene();
-      this.addChild(startScene);  
+      this.addChild(startScene); 
+      startScene.addEventListener(GameEvent.GAME_GO, this.go, this); 
+    }
+
+    // 进入游戏
+    private go() {
+        console.log('进入游戏！');
     }
 
     /**
