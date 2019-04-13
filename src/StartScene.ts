@@ -33,9 +33,9 @@ class StartScene extends egret.Sprite {
         start_btn.touchEnabled = true;
         start_btn.x = GameData.getStageWidth() / 2;
         start_btn.y = 800;
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.start_btnCallback, this);
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.start_btnCallback, this);
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.start_btnCallback, this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.start_btnCallback(), this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.start_btnCallback(), this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.start_btnCallback(), this);
 
         // add rank img
         let rank_btn = new egret.Bitmap();
@@ -49,20 +49,19 @@ class StartScene extends egret.Sprite {
         // TODO:
     }
 
-    private start_btnCallback(evt: egret.TouchEvent): void {
-        let currentX = evt.currentTarget.scaleX;
-        let currentY = evt.currentTarget.scaleY;
-        console.log('tap button');
+    private start_btnCallback(type, evt: egret.TouchEvent): void {
         if(evt.type === egret.TouchEvent.TOUCH_BEGIN) {
-            currentX = 1.05;
-            currentY = 1.05;
+            let current = evt.currentTarget;
+            current.scaleX = 1.05;
+            current.scaleY = current.scaleX;
         } else if(evt.type === egret.TouchEvent.TOUCH_END) {
-            currentX = 1.0;
-            currentY = 1.0;
-
+            let current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
         } else if(evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            let current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
         }
     }
 }

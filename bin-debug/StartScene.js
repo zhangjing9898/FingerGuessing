@@ -38,9 +38,9 @@ var StartScene = (function (_super) {
         start_btn.touchEnabled = true;
         start_btn.x = GameData.getStageWidth() / 2;
         start_btn.y = 800;
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.start_btnCallback, this);
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.start_btnCallback, this);
-        start_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.start_btnCallback, this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.start_btnCallback(), this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.start_btnCallback(), this);
+        start_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.start_btnCallback(), this);
         // add rank img
         var rank_btn = new egret.Bitmap();
         rank_btn.texture = RES.getRes("rank_png");
@@ -52,21 +52,21 @@ var StartScene = (function (_super) {
         rank_btn.touchEnabled = true;
         // TODO:
     };
-    StartScene.prototype.start_btnCallback = function (evt) {
-        var currentX = evt.currentTarget.scaleX;
-        var currentY = evt.currentTarget.scaleY;
-        console.log('tap button');
+    StartScene.prototype.start_btnCallback = function (type, evt) {
         if (evt.type === egret.TouchEvent.TOUCH_BEGIN) {
-            currentX = 1.05;
-            currentY = 1.05;
+            var current = evt.currentTarget;
+            current.scaleX = 1.05;
+            current.scaleY = current.scaleX;
         }
         else if (evt.type === egret.TouchEvent.TOUCH_END) {
-            currentX = 1.0;
-            currentY = 1.0;
+            var current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
         }
         else if (evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            var current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
         }
     };
     return StartScene;

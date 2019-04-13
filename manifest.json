@@ -9,6 +9,7 @@
 	],
 	"game": [
 		"bin-debug/GameData.js",
+		"bin-debug/GameEvent.js",
 		"bin-debug/LoadingUI.js",
 		"bin-debug/Main.js",
 		"bin-debug/Platform.js",
