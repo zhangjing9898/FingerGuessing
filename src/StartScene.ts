@@ -46,7 +46,9 @@ class StartScene extends egret.Sprite {
         rank_btn.x = 550;
         rank_btn.y = 60;
         rank_btn.touchEnabled = true;
-        // TODO:
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.rank_btnCallback, this);
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.rank_btnCallback, this);
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.rank_btnCallback, this);
     }
 
     private start_btnCallback(evt: egret.TouchEvent): void {
@@ -59,6 +61,24 @@ class StartScene extends egret.Sprite {
             current.scaleX = 1;
             current.scaleY = current.scaleX;
             let event: GameEvent = new GameEvent(GameEvent.GAME_GO);
+            this.dispatchEvent(event);
+        } else if(evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
+            let current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
+        }
+    }
+
+    private rank_btnCallback(evt: egret.TouchEvent):void{
+        if(evt.type === egret.TouchEvent.TOUCH_BEGIN) {
+            let current = evt.currentTarget;
+            current.scaleX = 1.05;
+            current.scaleY = current.scaleX;
+        } else if(evt.type === egret.TouchEvent.TOUCH_END) {
+            let current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
+            let event: GameEvent = new GameEvent(GameEvent.GAME_BLEED);
             this.dispatchEvent(event);
         } else if(evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
             let current = evt.currentTarget;

@@ -50,7 +50,9 @@ var StartScene = (function (_super) {
         rank_btn.x = 550;
         rank_btn.y = 60;
         rank_btn.touchEnabled = true;
-        // TODO:
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.rank_btnCallback, this);
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.rank_btnCallback, this);
+        rank_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.rank_btnCallback, this);
     };
     StartScene.prototype.start_btnCallback = function (evt) {
         if (evt.type === egret.TouchEvent.TOUCH_BEGIN) {
@@ -64,6 +66,25 @@ var StartScene = (function (_super) {
             current.scaleY = current.scaleX;
             var event_1 = new GameEvent(GameEvent.GAME_GO);
             this.dispatchEvent(event_1);
+        }
+        else if (evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
+            var current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
+        }
+    };
+    StartScene.prototype.rank_btnCallback = function (evt) {
+        if (evt.type === egret.TouchEvent.TOUCH_BEGIN) {
+            var current = evt.currentTarget;
+            current.scaleX = 1.05;
+            current.scaleY = current.scaleX;
+        }
+        else if (evt.type === egret.TouchEvent.TOUCH_END) {
+            var current = evt.currentTarget;
+            current.scaleX = 1;
+            current.scaleY = current.scaleX;
+            var event_2 = new GameEvent(GameEvent.GAME_BLEED);
+            this.dispatchEvent(event_2);
         }
         else if (evt.type === egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
             var current = evt.currentTarget;
