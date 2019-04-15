@@ -146,9 +146,13 @@ var Main = (function (_super) {
     // 进入游戏
     Main.prototype.go = function () {
         console.log('进入游戏！');
+        // 手动回收侦听器
+        this.removeEventListener(GameEvent.GAME_GO, this.go, this);
     };
     Main.prototype.startRank = function () {
         console.log('进入排行榜！');
+        // 手动回收侦听器
+        this.removeEventListener(GameEvent.GAME_BLEED, this.startRank, this);
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

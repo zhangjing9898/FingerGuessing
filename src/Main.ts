@@ -96,10 +96,14 @@ class Main extends egret.DisplayObjectContainer {
     // 进入游戏
     private go() {
         console.log('进入游戏！');
+        // 手动回收侦听器
+        this.removeEventListener(GameEvent.GAME_GO, this.go, this);
     }
 
     private startRank() {
         console.log('进入排行榜！');
+        // 手动回收侦听器
+        this.removeEventListener(GameEvent.GAME_BLEED, this.startRank, this);
     }
 
     /**
