@@ -98,6 +98,9 @@ class Main extends egret.DisplayObjectContainer {
         console.log('进入游戏！');
         // 手动回收侦听器
         this.removeEventListener(GameEvent.GAME_GO, this.go, this);
+        this.removeChildren();
+        let game = new Game();
+        this.addChild(game);
     }
 
     private startRank() {

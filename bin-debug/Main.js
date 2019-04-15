@@ -148,6 +148,9 @@ var Main = (function (_super) {
         console.log('进入游戏！');
         // 手动回收侦听器
         this.removeEventListener(GameEvent.GAME_GO, this.go, this);
+        this.removeChildren();
+        var game = new Game();
+        this.addChild(game);
     };
     Main.prototype.startRank = function () {
         console.log('进入排行榜！');
