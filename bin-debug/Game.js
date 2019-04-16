@@ -61,7 +61,8 @@ var Game = (function (_super) {
         left_hand.y = stageH / 2 - 100;
         left_hand.scaleX = 0.6;
         left_hand.scaleY = 0.6;
-        // TODO: need to tween
+        this.left_hand = left_hand;
+        this.lTween();
         // set right_hand size
         var right_hand = new egret.Bitmap();
         right_hand.texture = RES.getRes("rock_png");
@@ -73,13 +74,15 @@ var Game = (function (_super) {
         right_hand.y = stageH / 2 - 100;
         right_hand.scaleX = 0.6;
         right_hand.scaleY = 0.6;
-        // TODO: need to tween
+        this.right_hand = right_hand;
+        this.rTween();
     };
     Game.prototype.setUIButton = function () {
         var stageH = GameData.getStageHeight();
         var left_btn = new egret.Bitmap();
         left_btn.texture = RES.getRes("left_png");
         this.addChild(left_btn);
+        this.left_btn = left_btn;
         left_btn.anchorOffsetX = left_btn.width / 2;
         left_btn.anchorOffsetY = left_btn.height / 2;
         left_btn.x = left_btn.width / 2;
@@ -87,6 +90,7 @@ var Game = (function (_super) {
         var middle_btn = new egret.Bitmap();
         middle_btn.texture = RES.getRes("middle_png");
         this.addChild(middle_btn);
+        this.middle_btn = middle_btn;
         middle_btn.anchorOffsetX = middle_btn.width / 2;
         middle_btn.anchorOffsetY = middle_btn.height / 2;
         middle_btn.x = middle_btn.width / 2 + left_btn.width;
@@ -95,6 +99,7 @@ var Game = (function (_super) {
         right_btn.texture = RES.getRes("right_png");
         this.addChild(right_btn);
         this.right_btn = right_btn;
+        this.right_btn = right_btn;
         right_btn.anchorOffsetX = right_btn.width / 2;
         right_btn.anchorOffsetY = right_btn.height / 2;
         right_btn.x = right_btn.width / 2 + left_btn.width + middle_btn.width;
@@ -102,8 +107,16 @@ var Game = (function (_super) {
     };
     // left-hand tween
     Game.prototype.lTween = function () {
-        // TODO: time deal
+        // 根据游戏所剩时间，控制time，达到控制缓动效果
+        // 距离游戏结束时间越短，hand摇动越快
+        var game_time = parseInt(egret.localStorage.getItem("default_time"));
         var time = 40;
+        if (game_time >= 30) {
+            time = 130;
+        }
+        else if (game_time >= 15 && game_time < 30) {
+            time = 70;
+        }
         this.left_hand.texture = RES.getRes("rock_png");
         egret.Tween.get(this.left_hand).to({
             rotation: 20
@@ -128,9 +141,60 @@ var Game = (function (_super) {
         }, time)
             .call(this.left_change, this);
     };
+    Game.prototype.rTween = function () {
+        var game_time = parseInt(egret.localStorage.getItem("default_time"));
+        var time = 40;
+        if (game_time >= 30) {
+            time = 130;
+        }
+        else if (game_time >= 15 && game_time < 30) {
+            time = 70;
+        }
+        this.right_hand.texture = RES.getRes("rock_png");
+        egret.Tween.get(this.right_hand).to({
+            rotation: -20 + 180
+        }, time)
+            .to({
+            rotation: 20 + 180
+        }, time)
+            .to({
+            rotation: -20 + 180
+        }, time)
+            .to({
+            rotation: 20 + 180
+        }, time)
+            .to({
+            rotation: -20 + 180
+        }, time)
+            .to({
+            rotation: 20 + 180
+        }, time)
+            .to({
+            rotation: 180
+        }, time)
+            .call(this.right_change, this);
+    };
     // replace left_hand img
     Game.prototype.left_change = function () {
-        console.log('left-hand need to replace');
+        this.left_btn.touchEnabled = true;
+        this.middle_btn.touchEnabled = true;
+        this.right_btn.touchEnabled = true;
+        var ran = Math.random() * 3;
+        if (ran >= 0 && ran < 1) {
+            this.left_hand.texture = RES.getRes("rock_png");
+            // TODO:
+        }
+        else if (ran >= 1 && ran < 2) {
+            this.left_hand.texture = RES.getRes("paper_png");
+            // ...
+        }
+        else {
+            this.left_hand.texture = RES.getRes("scissor_png");
+            // ...
+        }
+    };
+    Game.prototype.right_change = function () {
+        console.log('right_change');
     };
     return Game;
 }(egret.Sprite));
