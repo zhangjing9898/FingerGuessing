@@ -44,6 +44,8 @@ class Game extends egret.Sprite {
         // this.score_txt = score_txt;
 
         // TODO: add timerPanel
+        let timerPanel = new TimerPanel();
+        this.addChild(timerPanel);
     }
 
     // set hand related const
@@ -189,7 +191,7 @@ class Game extends egret.Sprite {
         }, time)
         .call(this.right_change, this);
     }
-
+    
     // replace left_hand img
     private left_change() {
         this.left_btn.touchEnabled = true;
@@ -206,10 +208,18 @@ class Game extends egret.Sprite {
             this.left_hand.texture = RES.getRes("scissor_png");
             // ...
         }
-
     }
 
     private right_change() {
-        console.log('right_change')
+        let ran = Math.random()*3;
+        if (ran >= 0 && ran < 1) {
+            this.right_hand.texture = RES.getRes("rock_png");
+            // TODO:
+        } else if (ran >= 1 && ran < 2) {
+            this.right_hand.texture = RES.getRes("paper_png");
+            // ...
+        } else {
+            this.right_hand.texture = RES.getRes("scissor_png");
+        }
     }
 }

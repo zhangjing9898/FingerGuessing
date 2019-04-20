@@ -47,6 +47,8 @@ var Game = (function (_super) {
         // TODO:
         // this.score_txt = score_txt;
         // TODO: add timerPanel
+        var timerPanel = new TimerPanel();
+        this.addChild(timerPanel);
     };
     // build hand function
     Game.prototype.setHand = function () {
@@ -194,7 +196,18 @@ var Game = (function (_super) {
         }
     };
     Game.prototype.right_change = function () {
-        console.log('right_change');
+        var ran = Math.random() * 3;
+        if (ran >= 0 && ran < 1) {
+            this.right_hand.texture = RES.getRes("rock_png");
+            // TODO:
+        }
+        else if (ran >= 1 && ran < 2) {
+            this.right_hand.texture = RES.getRes("paper_png");
+            // ...
+        }
+        else {
+            this.right_hand.texture = RES.getRes("scissor_png");
+        }
     };
     return Game;
 }(egret.Sprite));
