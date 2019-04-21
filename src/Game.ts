@@ -46,6 +46,8 @@ class Game extends egret.Sprite {
         // TODO: add timerPanel
         let timerPanel = new TimerPanel();
         this.addChild(timerPanel);
+        timerPanel.start();
+        // TODO:游戏结束面板
     }
 
     // set hand related const

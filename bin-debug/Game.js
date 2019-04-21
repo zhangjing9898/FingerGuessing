@@ -49,6 +49,8 @@ var Game = (function (_super) {
         // TODO: add timerPanel
         var timerPanel = new TimerPanel();
         this.addChild(timerPanel);
+        timerPanel.start();
+        // TODO:游戏结束面板
     };
     // build hand function
     Game.prototype.setHand = function () {
