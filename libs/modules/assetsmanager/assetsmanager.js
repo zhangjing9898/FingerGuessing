@@ -1174,11 +1174,6 @@ var RES;
      */
     function getResByUrl(url, compFunc, thisObject, type) {
         if (type === void 0) { type = ""; }
-        if (!instance) {
-            var message = egret.sys.tr(3200);
-            egret.warn(message);
-            return Promise.reject(message);
-        }
         return compatiblePromise(instance.getResByUrl(url, compFunc, thisObject, type));
     }
     RES.getResByUrl = getResByUrl;
@@ -1640,15 +1635,12 @@ var RES;
             if (force === void 0) { force = true; }
             var group = RES.config.getGroupByName(name);
             if (group && group.length > 0) {
-                var index = RES.config.config.loadGroup.indexOf(name);
-                if (index == -1) {
-                    return false;
-                }
                 if (force || (RES.config.config.loadGroup.length == 1 && RES.config.config.loadGroup[0] == name)) {
                     for (var _i = 0, group_2 = group; _i < group_2.length; _i++) {
                         var item = group_2[_i];
                         RES.queue.unloadResource(item);
                     }
+                    var index = RES.config.config.loadGroup.indexOf(name);
                     RES.config.config.loadGroup.splice(index, 1);
                 }
                 else {
@@ -1665,12 +1657,15 @@ var RES;
                             }
                         }
                     }
-                    for (var _c = 0, group_3 = group; _c < group_3.length; _c++) {
-                        var item = group_3[_c];
-                        if (removeItemHash[item.name] && removeItemHash[item.name] == 1) {
-                            RES.queue.unloadResource(item);
+                    for (var tmpname in removeItemHash) {
+                        if (removeItemHash[tmpname] && removeItemHash[tmpname] == 1) {
+                            var item = RES.config.getResource(tmpname);
+                            if (item) {
+                                RES.queue.unloadResource(item);
+                            }
                         }
                     }
+                    var index = RES.config.config.loadGroup.indexOf(name);
                     RES.config.config.loadGroup.splice(index, 1);
                 }
                 return true;
@@ -2065,9 +2060,6 @@ var RES;
                         }
                         host.save(r, bitmapData);
                         return spriteSheet;
-                    }, function (e) {
-                        host.remove(r);
-                        throw e;
                     });
                 });
             },
@@ -2139,9 +2131,6 @@ var RES;
                         // todo refactor
                         host.save(r, texture);
                         return font;
-                    }, function (e) {
-                        host.remove(r);
-                        throw e;
                     });
                 });
             },
