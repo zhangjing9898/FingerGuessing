@@ -121,6 +121,9 @@ var Game = (function (_super) {
         middle_btn.anchorOffsetY = middle_btn.height / 2;
         middle_btn.x = middle_btn.width / 2 + left_btn.width;
         middle_btn.y = stageH - middle_btn.height / 2;
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.middle_btnCallback, this);
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.middle_btnCallback, this);
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.middle_btnCallback, this);
         var right_btn = new egret.Bitmap();
         right_btn.texture = RES.getRes("right_png");
         this.addChild(right_btn);
@@ -130,6 +133,9 @@ var Game = (function (_super) {
         right_btn.anchorOffsetY = right_btn.height / 2;
         right_btn.x = right_btn.width / 2 + left_btn.width + middle_btn.width;
         right_btn.y = stageH - right_btn.height / 2;
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.right_btnCallback, this);
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.right_btnCallback, this);
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.right_btnCallback, this);
     };
     // left-hand tween
     Game.prototype.lTween = function () {
@@ -225,36 +231,20 @@ var Game = (function (_super) {
         this.middle_btn.touchEnabled = false;
         this.right_btn.touchEnabled = false;
     };
-    Game.prototype.left_btnCallback = function (evt) {
+    Game.prototype.commonCallback = function (evt, direction, actions, btn) {
         var _this = this;
         var curX = evt.currentTarget.scaleX;
         var curY = evt.currentTarget.scaleY;
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
             curX = 1.05;
             curY = 1.05;
-            this.left_btn.texture = RES.getRes("left_press_png");
+            btn.texture = RES.getRes(direction + "_press_png");
         }
         else if (evt.type == egret.TouchEvent.TOUCH_END) {
             curX = 1.0;
             curY = 1.0;
-            this.left_btn.texture = RES.getRes("left_png");
+            btn.texture = RES.getRes(direction + "_png");
             this.un_touch();
-            var actions = function () {
-                var answerFalse = function () { _this.answer_type = false; };
-                var answerTrue = function () { _this.answer_type = true; };
-                var addScore = function () { _this.score++; _this.answer_type = true; };
-                return new Map([
-                    [{ left_type: 0, right_type: 0 }, answerFalse],
-                    [{ left_type: 0, right_type: 1 }, answerFalse],
-                    [{ left_type: 0, right_type: 2 }, answerTrue],
-                    [{ left_type: 1, right_type: 0 }, addScore],
-                    [{ left_type: 1, right_type: 1 }, answerFalse],
-                    [{ left_type: 1, right_type: 2 }, answerFalse],
-                    [{ left_type: 2, right_type: 0 }, answerFalse],
-                    [{ left_type: 2, right_type: 1 }, addScore],
-                    [{ left_type: 2, right_type: 2 }, answerFalse]
-                ]);
-            };
             var action = __spread(actions()).filter(function (_a) {
                 var _b = __read(_a, 2), key = _b[0], value = _b[1];
                 return (key.left_type == _this.left_type && key.right_type == _this.right_type);
@@ -279,8 +269,65 @@ var Game = (function (_super) {
         else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
             curX = 1.0;
             curY = 1.0;
-            this.left_btn.texture = RES.getRes("left_png");
+            btn.texture = RES.getRes("\"" + direction + "_png\"");
         }
+    };
+    Game.prototype.left_btnCallback = function (evt) {
+        var _this = this;
+        var actions = function () {
+            var answerFalse = function () { _this.answer_type = false; };
+            var addScore = function () { _this.score++; _this.answer_type = true; };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, answerFalse],
+                [{ left_type: 0, right_type: 1 }, answerFalse],
+                [{ left_type: 0, right_type: 2 }, addScore],
+                [{ left_type: 1, right_type: 0 }, addScore],
+                [{ left_type: 1, right_type: 1 }, answerFalse],
+                [{ left_type: 1, right_type: 2 }, answerFalse],
+                [{ left_type: 2, right_type: 0 }, answerFalse],
+                [{ left_type: 2, right_type: 1 }, addScore],
+                [{ left_type: 2, right_type: 2 }, answerFalse]
+            ]);
+        };
+        this.commonCallback(evt, 'left', actions, this.left_btn);
+    };
+    Game.prototype.middle_btnCallback = function (evt) {
+        var _this = this;
+        var actions = function () {
+            var answerFalse = function () { _this.answer_type = false; };
+            var addScore = function () { _this.score++; _this.answer_type = true; };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, addScore],
+                [{ left_type: 0, right_type: 1 }, answerFalse],
+                [{ left_type: 0, right_type: 2 }, answerFalse],
+                [{ left_type: 1, right_type: 0 }, answerFalse],
+                [{ left_type: 1, right_type: 1 }, addScore],
+                [{ left_type: 1, right_type: 2 }, answerFalse],
+                [{ left_type: 2, right_type: 0 }, answerFalse],
+                [{ left_type: 2, right_type: 1 }, answerFalse],
+                [{ left_type: 2, right_type: 2 }, addScore]
+            ]);
+        };
+        this.commonCallback(evt, 'middle', actions, this.middle_btn);
+    };
+    Game.prototype.right_btnCallback = function (evt) {
+        var _this = this;
+        var actions = function () {
+            var answerFalse = function () { _this.answer_type = false; };
+            var addScore = function () { _this.score++; _this.answer_type = true; };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, answerFalse],
+                [{ left_type: 0, right_type: 1 }, addScore],
+                [{ left_type: 0, right_type: 2 }, answerFalse],
+                [{ left_type: 1, right_type: 0 }, answerFalse],
+                [{ left_type: 1, right_type: 1 }, answerFalse],
+                [{ left_type: 1, right_type: 2 }, addScore],
+                [{ left_type: 2, right_type: 0 }, addScore],
+                [{ left_type: 2, right_type: 1 }, answerFalse],
+                [{ left_type: 2, right_type: 2 }, answerFalse]
+            ]);
+        };
+        this.commonCallback(evt, 'right', actions, this.right_btn);
     };
     Game.prototype.right_change = function () {
         var ran = Math.random() * 3;

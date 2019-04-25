@@ -1,5 +1,5 @@
 class Game extends egret.Sprite {
-    
+
     public constructor() {
         super();
         this.bg();
@@ -66,7 +66,7 @@ class Game extends egret.Sprite {
         this.addChild(left_hand);
         left_hand.anchorOffsetX = left_hand.height / 2;
         left_hand.x = -50;
-        left_hand.y = stageH / 2 -100;
+        left_hand.y = stageH / 2 - 100;
         left_hand.scaleX = 0.6;
         left_hand.scaleY = 0.6;
         this.left_hand = left_hand;
@@ -74,14 +74,14 @@ class Game extends egret.Sprite {
 
         // set right_hand size
         let right_hand = new egret.Bitmap();
-		right_hand.texture = RES.getRes("rock_png");
-		this.addChild(right_hand);
-		right_hand.rotation = 180;
-		right_hand.anchorOffsetX = 0;
-		right_hand.anchorOffsetY = right_hand.height / 2;
-		right_hand.x = stageW + 50;
-		right_hand.y = stageH / 2 - 100;
-		right_hand.scaleX = 0.6;
+        right_hand.texture = RES.getRes("rock_png");
+        this.addChild(right_hand);
+        right_hand.rotation = 180;
+        right_hand.anchorOffsetX = 0;
+        right_hand.anchorOffsetY = right_hand.height / 2;
+        right_hand.x = stageW + 50;
+        right_hand.y = stageH / 2 - 100;
+        right_hand.scaleX = 0.6;
         right_hand.scaleY = 0.6;
         this.right_hand = right_hand;
         this.rTween();
@@ -100,31 +100,37 @@ class Game extends egret.Sprite {
         this.addChild(left_btn);
         this.left_btn = left_btn;
         left_btn.anchorOffsetX = left_btn.width / 2;
-		left_btn.anchorOffsetY = left_btn.height / 2;
-		left_btn.x = left_btn.width / 2;
+        left_btn.anchorOffsetY = left_btn.height / 2;
+        left_btn.x = left_btn.width / 2;
         left_btn.y = stageH - left_btn.height / 2;
         left_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.left_btnCallback, this);
         left_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.left_btnCallback, this);
         left_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.left_btnCallback, this);
 
         let middle_btn = new egret.Bitmap();
-		middle_btn.texture = RES.getRes("middle_png");
+        middle_btn.texture = RES.getRes("middle_png");
         this.addChild(middle_btn);
         this.middle_btn = middle_btn;
-		middle_btn.anchorOffsetX = middle_btn.width / 2;
-		middle_btn.anchorOffsetY = middle_btn.height / 2;
-		middle_btn.x = middle_btn.width / 2 + left_btn.width;
-		middle_btn.y = stageH - middle_btn.height / 2;
-        
+        middle_btn.anchorOffsetX = middle_btn.width / 2;
+        middle_btn.anchorOffsetY = middle_btn.height / 2;
+        middle_btn.x = middle_btn.width / 2 + left_btn.width;
+        middle_btn.y = stageH - middle_btn.height / 2;
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.middle_btnCallback, this);
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.middle_btnCallback, this);
+        middle_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.middle_btnCallback, this);
+
         let right_btn = new egret.Bitmap();
-		right_btn.texture = RES.getRes("right_png");
+        right_btn.texture = RES.getRes("right_png");
         this.addChild(right_btn);
         this.right_btn = right_btn;
-		this.right_btn = right_btn;
-		right_btn.anchorOffsetX = right_btn.width / 2;
-		right_btn.anchorOffsetY = right_btn.height / 2;
-		right_btn.x = right_btn.width / 2 + left_btn.width + middle_btn.width;
-		right_btn.y = stageH - right_btn.height / 2; 
+        this.right_btn = right_btn;
+        right_btn.anchorOffsetX = right_btn.width / 2;
+        right_btn.anchorOffsetY = right_btn.height / 2;
+        right_btn.x = right_btn.width / 2 + left_btn.width + middle_btn.width;
+        right_btn.y = stageH - right_btn.height / 2;
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.right_btnCallback, this);
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.right_btnCallback, this);
+        right_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.right_btnCallback, this);
     }
 
     // left-hand tween
@@ -142,28 +148,28 @@ class Game extends egret.Sprite {
         egret.Tween.get(this.left_hand).to({
             rotation: 20
         }, time)
-        .to({
-            rotation: -20
-        }, time)
-        .to({
-            rotation: 20
-        }, time)
-        .to({
-            rotation: -20
-        }, time)
-        .to({
-            rotation: 20
-        }, time)
-        .to({
-            rotation: -20
-        }, time)
-        .to({
-            rotation: 0
-        }, time)
-        .call(this.left_change, this);
+            .to({
+                rotation: -20
+            }, time)
+            .to({
+                rotation: 20
+            }, time)
+            .to({
+                rotation: -20
+            }, time)
+            .to({
+                rotation: 20
+            }, time)
+            .to({
+                rotation: -20
+            }, time)
+            .to({
+                rotation: 0
+            }, time)
+            .call(this.left_change, this);
     }
 
-    private rTween(){
+    private rTween() {
         let game_time = parseInt(egret.localStorage.getItem("default_time"));
         let time = 40;
         if (game_time >= 30) {
@@ -173,27 +179,27 @@ class Game extends egret.Sprite {
         }
         this.right_hand.texture = RES.getRes("rock_png");
         egret.Tween.get(this.right_hand).to({
-            rotation: -20+180
+            rotation: -20 + 180
         }, time)
-        .to({
-            rotation: 20+180
-        }, time)
-        .to({
-            rotation: -20+180
-        }, time)
-        .to({
-            rotation: 20+180
-        }, time)
-        .to({
-            rotation: -20+180
-        }, time)
-        .to({
-            rotation: 20+180
-        }, time)
-        .to({
-            rotation: 180
-        }, time)
-        .call(this.right_change, this);
+            .to({
+                rotation: 20 + 180
+            }, time)
+            .to({
+                rotation: -20 + 180
+            }, time)
+            .to({
+                rotation: 20 + 180
+            }, time)
+            .to({
+                rotation: -20 + 180
+            }, time)
+            .to({
+                rotation: 20 + 180
+            }, time)
+            .to({
+                rotation: 180
+            }, time)
+            .call(this.right_change, this);
     }
     // type用于定义出拳的情况，0 石头；1 布；2剪刀
     private left_type: number;
@@ -203,7 +209,7 @@ class Game extends egret.Sprite {
         this.left_btn.touchEnabled = true;
         this.middle_btn.touchEnabled = true;
         this.right_btn.touchEnabled = true;
-        let ran = Math.random()*3;
+        let ran = Math.random() * 3;
         if (ran >= 0 && ran < 1) {
             this.left_hand.texture = RES.getRes("rock_png");
             this.left_type = 0;
@@ -221,42 +227,23 @@ class Game extends egret.Sprite {
         this.middle_btn.touchEnabled = false;
         this.right_btn.touchEnabled = false;
     }
-    private left_btnCallback(evt: egret.TouchEvent): void {
 
+    private commonCallback(evt: egret.TouchEvent, direction: String, actions: Function, btn: egret.Bitmap): void {
         let curX = evt.currentTarget.scaleX;
         let curY = evt.currentTarget.scaleY;
-
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
             curX = 1.05;
             curY = 1.05;
-            this.left_btn.texture = RES.getRes("left_press_png");
+            btn.texture = RES.getRes(`${direction}_press_png`);
         } else if (evt.type == egret.TouchEvent.TOUCH_END) {
             curX = 1.0;
             curY = 1.0;
-            this.left_btn.texture = RES.getRes("left_png");
+            btn.texture = RES.getRes(`${direction}_png`);
             this.un_touch();
-
-            const actions = () => {
-				const answerFalse = () => { this.answer_type = false };
-				const answerTrue = () => { this.answer_type = true };
-				const addScore = () => { this.score++; this.answer_type = true};
-				return new Map([
-					[{ left_type: 0, right_type: 0 }, answerFalse],
-					[{ left_type: 0, right_type: 1 }, answerFalse],
-					[{ left_type: 0, right_type: 2 }, answerTrue],
-					[{ left_type: 1, right_type: 0 }, addScore],
-					[{ left_type: 1, right_type: 1 }, answerFalse],
-					[{ left_type: 1, right_type: 2 }, answerFalse],
-					[{ left_type: 2, right_type: 0 }, answerFalse],
-					[{ left_type: 2, right_type: 1 }, addScore],
-					[{ left_type: 2, right_type: 2 }, answerFalse]
-				])
-			}	
-			let action = [...actions()].filter(([key, value]) => (
-				key.left_type == this.left_type && key.right_type == this.right_type
+            let action = [...actions()].filter(([key, value]) => (
+                key.left_type == this.left_type && key.right_type == this.right_type
             ));
-			action.forEach(([key, value]) => value.call(this));
-           
+            action.forEach(([key, value]) => value.call(this));
             // 更新得分
             this.score_txt.text = "" + this.score;
             // 显示弹框
@@ -269,16 +256,72 @@ class Game extends egret.Sprite {
                 this.lTween();
                 this.rTween();
             }, 300);
-
         } else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
             curX = 1.0;
             curY = 1.0;
-            this.left_btn.texture = RES.getRes("left_png");
-        }   
+            btn.texture = RES.getRes(`"${direction}_png"`);
+        }
+    }
+
+    private left_btnCallback(evt: egret.TouchEvent): void {
+        const actions = () => {
+            const answerFalse = () => { this.answer_type = false };
+            const addScore = () => { this.score++; this.answer_type = true };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, answerFalse],
+                [{ left_type: 0, right_type: 1 }, answerFalse],
+                [{ left_type: 0, right_type: 2 }, addScore],
+                [{ left_type: 1, right_type: 0 }, addScore],
+                [{ left_type: 1, right_type: 1 }, answerFalse],
+                [{ left_type: 1, right_type: 2 }, answerFalse],
+                [{ left_type: 2, right_type: 0 }, answerFalse],
+                [{ left_type: 2, right_type: 1 }, addScore],
+                [{ left_type: 2, right_type: 2 }, answerFalse]
+            ])
+        }
+        this.commonCallback(evt, 'left', actions, this.left_btn);
+    }
+
+    private middle_btnCallback(evt: egret.TouchEvent): void {
+        const actions = () => {
+            const answerFalse = () => { this.answer_type = false };
+            const addScore = () => { this.score++; this.answer_type = true };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, addScore],
+                [{ left_type: 0, right_type: 1 }, answerFalse],
+                [{ left_type: 0, right_type: 2 }, answerFalse],
+                [{ left_type: 1, right_type: 0 }, answerFalse],
+                [{ left_type: 1, right_type: 1 }, addScore],
+                [{ left_type: 1, right_type: 2 }, answerFalse],
+                [{ left_type: 2, right_type: 0 }, answerFalse],
+                [{ left_type: 2, right_type: 1 }, answerFalse],
+                [{ left_type: 2, right_type: 2 }, addScore]
+            ])
+        }
+        this.commonCallback(evt, 'middle', actions, this.middle_btn);
+    }
+
+    private right_btnCallback(evt: egret.TouchEvent): void {
+        const actions = () => {
+            const answerFalse = () => { this.answer_type = false };
+            const addScore = () => { this.score++; this.answer_type = true };
+            return new Map([
+                [{ left_type: 0, right_type: 0 }, answerFalse],
+                [{ left_type: 0, right_type: 1 }, addScore],
+                [{ left_type: 0, right_type: 2 }, answerFalse],
+                [{ left_type: 1, right_type: 0 }, answerFalse],
+                [{ left_type: 1, right_type: 1 }, answerFalse],
+                [{ left_type: 1, right_type: 2 }, addScore],
+                [{ left_type: 2, right_type: 0 }, addScore],
+                [{ left_type: 2, right_type: 1 }, answerFalse],
+                [{ left_type: 2, right_type: 2 }, answerFalse]
+            ])
+        }
+        this.commonCallback(evt, 'right', actions, this.right_btn);
     }
 
     private right_change() {
-        let ran = Math.random()*3;
+        let ran = Math.random() * 3;
         if (ran >= 0 && ran < 1) {
             this.right_hand.texture = RES.getRes("rock_png");
             this.right_type = 0;
