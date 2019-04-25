@@ -227,30 +227,32 @@ var Game = (function (_super) {
     };
     Game.prototype.left_btnCallback = function (evt) {
         var _this = this;
+        var curX = evt.currentTarget.scaleX;
+        var curY = evt.currentTarget.scaleY;
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
-            evt.currentTarget.scaleX = 1.05;
-            evt.currentTarget.scaleY = 1.05;
+            curX = 1.05;
+            curY = 1.05;
             this.left_btn.texture = RES.getRes("left_press_png");
         }
         else if (evt.type == egret.TouchEvent.TOUCH_END) {
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            curX = 1.0;
+            curY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
             this.un_touch();
             var actions = function () {
-                var functionA = function () { _this.answer_type = false; };
-                var functionB = function () { _this.answer_type = true; };
-                var functionC = function () { _this.score++; _this.answer_type = true; };
+                var answerFalse = function () { _this.answer_type = false; };
+                var answerTrue = function () { _this.answer_type = true; };
+                var addScore = function () { _this.score++; _this.answer_type = true; };
                 return new Map([
-                    [{ left_type: 0, right_type: 0 }, functionA],
-                    [{ left_type: 0, right_type: 1 }, functionA],
-                    [{ left_type: 0, right_type: 2 }, functionB],
-                    [{ left_type: 1, right_type: 0 }, functionC],
-                    [{ left_type: 1, right_type: 1 }, functionA],
-                    [{ left_type: 1, right_type: 2 }, functionA],
-                    [{ left_type: 2, right_type: 0 }, functionA],
-                    [{ left_type: 2, right_type: 1 }, functionC],
-                    [{ left_type: 2, right_type: 2 }, functionA]
+                    [{ left_type: 0, right_type: 0 }, answerFalse],
+                    [{ left_type: 0, right_type: 1 }, answerFalse],
+                    [{ left_type: 0, right_type: 2 }, answerTrue],
+                    [{ left_type: 1, right_type: 0 }, addScore],
+                    [{ left_type: 1, right_type: 1 }, answerFalse],
+                    [{ left_type: 1, right_type: 2 }, answerFalse],
+                    [{ left_type: 2, right_type: 0 }, answerFalse],
+                    [{ left_type: 2, right_type: 1 }, addScore],
+                    [{ left_type: 2, right_type: 2 }, answerFalse]
                 ]);
             };
             var action = __spread(actions()).filter(function (_a) {
@@ -275,8 +277,8 @@ var Game = (function (_super) {
             }, 300);
         }
         else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            curX = 1.0;
+            curY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
         }
     };

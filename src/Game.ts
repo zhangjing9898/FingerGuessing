@@ -222,32 +222,34 @@ class Game extends egret.Sprite {
         this.right_btn.touchEnabled = false;
     }
     private left_btnCallback(evt: egret.TouchEvent): void {
+
+        let curX = evt.currentTarget.scaleX;
+        let curY = evt.currentTarget.scaleY;
+
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
-            
-            evt.currentTarget.scaleX= 1.05;
-            evt.currentTarget.scaleY = 1.05;
+            curX = 1.05;
+            curY = 1.05;
             this.left_btn.texture = RES.getRes("left_press_png");
         } else if (evt.type == egret.TouchEvent.TOUCH_END) {
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            curX = 1.0;
+            curY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
             this.un_touch();
 
             const actions = () => {
-				const functionA = () => { this.answer_type = false };
-				const functionB = () => { this.answer_type = true };
-				const functionC = () => { this.score++; this.answer_type = true};
-				
+				const answerFalse = () => { this.answer_type = false };
+				const answerTrue = () => { this.answer_type = true };
+				const addScore = () => { this.score++; this.answer_type = true};
 				return new Map([
-					[{ left_type: 0, right_type: 0 }, functionA],
-					[{ left_type: 0, right_type: 1 }, functionA],
-					[{ left_type: 0, right_type: 2 }, functionB],
-					[{ left_type: 1, right_type: 0 }, functionC],
-					[{ left_type: 1, right_type: 1 }, functionA],
-					[{ left_type: 1, right_type: 2 }, functionA],
-					[{ left_type: 2, right_type: 0 }, functionA],
-					[{ left_type: 2, right_type: 1 }, functionC],
-					[{ left_type: 2, right_type: 2 }, functionA]
+					[{ left_type: 0, right_type: 0 }, answerFalse],
+					[{ left_type: 0, right_type: 1 }, answerFalse],
+					[{ left_type: 0, right_type: 2 }, answerTrue],
+					[{ left_type: 1, right_type: 0 }, addScore],
+					[{ left_type: 1, right_type: 1 }, answerFalse],
+					[{ left_type: 1, right_type: 2 }, answerFalse],
+					[{ left_type: 2, right_type: 0 }, answerFalse],
+					[{ left_type: 2, right_type: 1 }, addScore],
+					[{ left_type: 2, right_type: 2 }, answerFalse]
 				])
 			}	
 			let action = [...actions()].filter(([key, value]) => (
@@ -269,9 +271,8 @@ class Game extends egret.Sprite {
             }, 300);
 
         } else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
-           
-            evt.currentTarget.scaleX = 1.0;
-            evt.currentTarget.scaleY = 1.0;
+            curX = 1.0;
+            curY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
         }   
     }
