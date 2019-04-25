@@ -222,14 +222,12 @@ class Game extends egret.Sprite {
         this.right_btn.touchEnabled = false;
     }
     private left_btnCallback(evt: egret.TouchEvent): void {
-        console.log('evt.type', evt.type);
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
             
             evt.currentTarget.scaleX= 1.05;
             evt.currentTarget.scaleY = 1.05;
             this.left_btn.texture = RES.getRes("left_press_png");
         } else if (evt.type == egret.TouchEvent.TOUCH_END) {
-            console.log('end');
             evt.currentTarget.scaleX = 1.0;
             evt.currentTarget.scaleY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
@@ -238,7 +236,8 @@ class Game extends egret.Sprite {
             const actions = () => {
 				const functionA = () => { this.answer_type = false };
 				const functionB = () => { this.answer_type = true };
-				const functionC = () => { this.score++, this.answer_type = true};
+				const functionC = () => { this.score++; this.answer_type = true};
+				
 				return new Map([
 					[{ left_type: 0, right_type: 0 }, functionA],
 					[{ left_type: 0, right_type: 1 }, functionA],

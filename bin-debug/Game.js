@@ -227,14 +227,12 @@ var Game = (function (_super) {
     };
     Game.prototype.left_btnCallback = function (evt) {
         var _this = this;
-        console.log('evt.type', evt.type);
         if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
             evt.currentTarget.scaleX = 1.05;
             evt.currentTarget.scaleY = 1.05;
             this.left_btn.texture = RES.getRes("left_press_png");
         }
         else if (evt.type == egret.TouchEvent.TOUCH_END) {
-            console.log('end');
             evt.currentTarget.scaleX = 1.0;
             evt.currentTarget.scaleY = 1.0;
             this.left_btn.texture = RES.getRes("left_png");
@@ -242,7 +240,7 @@ var Game = (function (_super) {
             var actions = function () {
                 var functionA = function () { _this.answer_type = false; };
                 var functionB = function () { _this.answer_type = true; };
-                var functionC = function () { _this.score++, _this.answer_type = true; };
+                var functionC = function () { _this.score++; _this.answer_type = true; };
                 return new Map([
                     [{ left_type: 0, right_type: 0 }, functionA],
                     [{ left_type: 0, right_type: 1 }, functionA],
