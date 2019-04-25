@@ -56,7 +56,6 @@ class TimerPanel extends egret.Sprite {
     public start() {
         this.txt.text = "45'00'";
         this._timers = 45;
-        debugger
         this._timer.reset();
         this._timer.start();
     }

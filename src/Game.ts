@@ -40,8 +40,7 @@ class Game extends egret.Sprite {
         score_txt.x = 80;
         score_txt.y = 100;
         this.addChild(score_txt);
-        // TODO:
-        // this.score_txt = score_txt;
+        this.score_txt = score_txt;
 
         // TODO: add timerPanel
         let timerPanel = new TimerPanel();
@@ -103,7 +102,10 @@ class Game extends egret.Sprite {
         left_btn.anchorOffsetX = left_btn.width / 2;
 		left_btn.anchorOffsetY = left_btn.height / 2;
 		left_btn.x = left_btn.width / 2;
-		left_btn.y = stageH - left_btn.height / 2;
+        left_btn.y = stageH - left_btn.height / 2;
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.left_btnCallback, this);
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.left_btnCallback, this);
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.left_btnCallback, this);
 
         let middle_btn = new egret.Bitmap();
 		middle_btn.texture = RES.getRes("middle_png");
@@ -193,7 +195,9 @@ class Game extends egret.Sprite {
         }, time)
         .call(this.right_change, this);
     }
-    
+    // type用于定义出拳的情况，0 石头；1 布；2剪刀
+    private left_type: number;
+    private right_type: number;
     // replace left_hand img
     private left_change() {
         this.left_btn.touchEnabled = true;
@@ -202,26 +206,98 @@ class Game extends egret.Sprite {
         let ran = Math.random()*3;
         if (ran >= 0 && ran < 1) {
             this.left_hand.texture = RES.getRes("rock_png");
-            // TODO:
+            this.left_type = 0;
         } else if (ran >= 1 && ran < 2) {
             this.left_hand.texture = RES.getRes("paper_png");
-            // ...
+            this.left_type = 1;
         } else {
             this.left_hand.texture = RES.getRes("scissor_png");
-            // ...
+            this.left_type = 2;
         }
+    }
+    // 禁止touched 下方按钮
+    private un_touch() {
+        this.left_btn.touchEnabled = false;
+        this.middle_btn.touchEnabled = false;
+        this.right_btn.touchEnabled = false;
+    }
+    private left_btnCallback(evt: egret.TouchEvent): void {
+        console.log('evt.type', evt.type);
+        if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
+            
+            evt.currentTarget.scaleX= 1.05;
+            evt.currentTarget.scaleY = 1.05;
+            this.left_btn.texture = RES.getRes("left_press_png");
+        } else if (evt.type == egret.TouchEvent.TOUCH_END) {
+            console.log('end');
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
+            this.left_btn.texture = RES.getRes("left_png");
+            this.un_touch();
+
+            const actions = () => {
+				const functionA = () => { this.answer_type = false };
+				const functionB = () => { this.answer_type = true };
+				const functionC = () => { this.score++, this.answer_type = true};
+				return new Map([
+					[{ left_type: 0, right_type: 0 }, functionA],
+					[{ left_type: 0, right_type: 1 }, functionA],
+					[{ left_type: 0, right_type: 2 }, functionB],
+					[{ left_type: 1, right_type: 0 }, functionC],
+					[{ left_type: 1, right_type: 1 }, functionA],
+					[{ left_type: 1, right_type: 2 }, functionA],
+					[{ left_type: 2, right_type: 0 }, functionA],
+					[{ left_type: 2, right_type: 1 }, functionC],
+					[{ left_type: 2, right_type: 2 }, functionA]
+				])
+			}	
+			let action = [...actions()].filter(([key, value]) => (
+				key.left_type == this.left_type && key.right_type == this.right_type
+            ));
+			action.forEach(([key, value]) => value.call(this));
+           
+            // 更新得分
+            this.score_txt.text = "" + this.score;
+            // 显示弹框
+            this.resultPopup();
+            // 0.3s后 移除弹框
+            setTimeout(() => {
+                if (this.alert_img.parent) {
+                    this.alert_img.parent.removeChild(this.alert_img);
+                }
+                this.lTween();
+                this.rTween();
+            }, 300);
+
+        } else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
+           
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
+            this.left_btn.texture = RES.getRes("left_png");
+        }   
     }
 
     private right_change() {
         let ran = Math.random()*3;
         if (ran >= 0 && ran < 1) {
             this.right_hand.texture = RES.getRes("rock_png");
-            // TODO:
+            this.right_type = 0;
         } else if (ran >= 1 && ran < 2) {
             this.right_hand.texture = RES.getRes("paper_png");
-            // ...
+            this.right_type = 1;
         } else {
             this.right_hand.texture = RES.getRes("scissor_png");
+            this.right_type = 2;
         }
+    }
+
+    // 对错弹框
+    private resultPopup() {
+        let img = new egret.Bitmap();
+        this.answer_type == false ? img.texture = RES.getRes("fault_png") : img.texture = RES.getRes("true_png");
+        this.addChild(img);
+        this.alert_img = img;
+        img.x = 0;
+        img.y = GameData.getStageHeight() / 2 - img.height / 2 - 80;
     }
 }

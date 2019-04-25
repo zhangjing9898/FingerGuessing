@@ -8,6 +8,26 @@ var __extends = this && this.__extends || function __extends(t, e) {
 for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
 r.prototype = e.prototype, t.prototype = new r();
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spread = (this && this.__spread) || function () {
+    for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+    return ar;
+};
 var Game = (function (_super) {
     __extends(Game, _super);
     function Game() {
@@ -44,8 +64,7 @@ var Game = (function (_super) {
         score_txt.x = 80;
         score_txt.y = 100;
         this.addChild(score_txt);
-        // TODO:
-        // this.score_txt = score_txt;
+        this.score_txt = score_txt;
         // TODO: add timerPanel
         var timerPanel = new TimerPanel();
         this.addChild(timerPanel);
@@ -91,6 +110,9 @@ var Game = (function (_super) {
         left_btn.anchorOffsetY = left_btn.height / 2;
         left_btn.x = left_btn.width / 2;
         left_btn.y = stageH - left_btn.height / 2;
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.left_btnCallback, this);
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_END, this.left_btnCallback, this);
+        left_btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.left_btnCallback, this);
         var middle_btn = new egret.Bitmap();
         middle_btn.texture = RES.getRes("middle_png");
         this.addChild(middle_btn);
@@ -186,30 +208,103 @@ var Game = (function (_super) {
         var ran = Math.random() * 3;
         if (ran >= 0 && ran < 1) {
             this.left_hand.texture = RES.getRes("rock_png");
-            // TODO:
+            this.left_type = 0;
         }
         else if (ran >= 1 && ran < 2) {
             this.left_hand.texture = RES.getRes("paper_png");
-            // ...
+            this.left_type = 1;
         }
         else {
             this.left_hand.texture = RES.getRes("scissor_png");
-            // ...
+            this.left_type = 2;
+        }
+    };
+    // 禁止touched 下方按钮
+    Game.prototype.un_touch = function () {
+        this.left_btn.touchEnabled = false;
+        this.middle_btn.touchEnabled = false;
+        this.right_btn.touchEnabled = false;
+    };
+    Game.prototype.left_btnCallback = function (evt) {
+        var _this = this;
+        console.log('evt.type', evt.type);
+        if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
+            evt.currentTarget.scaleX = 1.05;
+            evt.currentTarget.scaleY = 1.05;
+            this.left_btn.texture = RES.getRes("left_press_png");
+        }
+        else if (evt.type == egret.TouchEvent.TOUCH_END) {
+            console.log('end');
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
+            this.left_btn.texture = RES.getRes("left_png");
+            this.un_touch();
+            var actions = function () {
+                var functionA = function () { _this.answer_type = false; };
+                var functionB = function () { _this.answer_type = true; };
+                var functionC = function () { _this.score++, _this.answer_type = true; };
+                return new Map([
+                    [{ left_type: 0, right_type: 0 }, functionA],
+                    [{ left_type: 0, right_type: 1 }, functionA],
+                    [{ left_type: 0, right_type: 2 }, functionB],
+                    [{ left_type: 1, right_type: 0 }, functionC],
+                    [{ left_type: 1, right_type: 1 }, functionA],
+                    [{ left_type: 1, right_type: 2 }, functionA],
+                    [{ left_type: 2, right_type: 0 }, functionA],
+                    [{ left_type: 2, right_type: 1 }, functionC],
+                    [{ left_type: 2, right_type: 2 }, functionA]
+                ]);
+            };
+            var action = __spread(actions()).filter(function (_a) {
+                var _b = __read(_a, 2), key = _b[0], value = _b[1];
+                return (key.left_type == _this.left_type && key.right_type == _this.right_type);
+            });
+            action.forEach(function (_a) {
+                var _b = __read(_a, 2), key = _b[0], value = _b[1];
+                return value.call(_this);
+            });
+            // 更新得分
+            this.score_txt.text = "" + this.score;
+            // 显示弹框
+            this.resultPopup();
+            // 0.3s后 移除弹框
+            setTimeout(function () {
+                if (_this.alert_img.parent) {
+                    _this.alert_img.parent.removeChild(_this.alert_img);
+                }
+                _this.lTween();
+                _this.rTween();
+            }, 300);
+        }
+        else if (evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE) {
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
+            this.left_btn.texture = RES.getRes("left_png");
         }
     };
     Game.prototype.right_change = function () {
         var ran = Math.random() * 3;
         if (ran >= 0 && ran < 1) {
             this.right_hand.texture = RES.getRes("rock_png");
-            // TODO:
+            this.right_type = 0;
         }
         else if (ran >= 1 && ran < 2) {
             this.right_hand.texture = RES.getRes("paper_png");
-            // ...
+            this.right_type = 1;
         }
         else {
             this.right_hand.texture = RES.getRes("scissor_png");
+            this.right_type = 2;
         }
+    };
+    // 对错弹框
+    Game.prototype.resultPopup = function () {
+        var img = new egret.Bitmap();
+        this.answer_type == false ? img.texture = RES.getRes("fault_png") : img.texture = RES.getRes("true_png");
+        this.addChild(img);
+        this.alert_img = img;
+        img.x = 0;
+        img.y = GameData.getStageHeight() / 2 - img.height / 2 - 80;
     };
     return Game;
 }(egret.Sprite));
