@@ -15,6 +15,7 @@
 		"bin-debug/Main.js",
 		"bin-debug/OverScene.js",
 		"bin-debug/Platform.js",
+		"bin-debug/RankScene.js",
 		"bin-debug/StartScene.js",
 		"bin-debug/TimerPanel.js"
 	]
