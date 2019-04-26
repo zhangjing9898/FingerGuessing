@@ -43,13 +43,32 @@ var OverScene = (function (_super) {
         this.commonImgConf('rank_png', 300, 750, this.rank_btnCallback);
         this.commonImgConf('home_png', 450, 750, this.home_btnCallback);
     };
-    OverScene.prototype.replay_btnCallback = function () {
-        console.log('replay_btnCallback');
+    OverScene.prototype.replay_btnCallback = function (evt) {
+        this.commonCallback(evt, GameEvent.GAME_CONTINUE);
     };
-    OverScene.prototype.rank_btnCallback = function () {
-        console.log('replay_btnCallback');
+    OverScene.prototype.rank_btnCallback = function (evt) {
+        this.commonCallback(evt, GameEvent.GAME_RANK);
     };
-    OverScene.prototype.home_btnCallback = function () {
+    OverScene.prototype.home_btnCallback = function (evt) {
+        this.commonCallback(evt, GameEvent.GAME_HIT);
+    };
+    OverScene.prototype.commonCallback = function (evt, type) {
+        var curX = evt.currentTarget.scaleX;
+        var curY = evt.currentTarget.scaleY;
+        if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
+            curX = 1.05;
+            curY = 1.05;
+        }
+        else if (evt.type == egret.TouchEvent.TOUCH_END) {
+            curX = 1.0;
+            curY = 1.0;
+            var event_1 = new GameEvent(type);
+            this.dispatchEvent(event_1);
+        }
+        else {
+            curX = 1.0;
+            curY = 1.0;
+        }
     };
     OverScene.prototype.commonImgConf = function (name, x, y, callback) {
         var btn = new egret.Bitmap();

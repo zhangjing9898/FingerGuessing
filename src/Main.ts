@@ -110,7 +110,6 @@ class Main extends egret.DisplayObjectContainer {
         // 创建结果页
         let layer = new OverScene();
         this.addChild(layer);
-
     }
 
     private startRank() {

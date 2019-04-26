@@ -37,16 +37,35 @@ class OverScene extends egret.Sprite {
         this.commonImgConf('home_png', 450, 750, this.home_btnCallback);
     }
 
-    private replay_btnCallback() {
-      console.log('replay_btnCallback');   
+    private replay_btnCallback(evt: egret.TouchEvent) {
+       this.commonCallback(evt, GameEvent.GAME_CONTINUE);
     }
 
-    private rank_btnCallback() {
-        console.log('replay_btnCallback');   
+    private rank_btnCallback(evt: egret.TouchEvent) {
+        this.commonCallback(evt, GameEvent.GAME_RANK);
     }
 
-    private home_btnCallback() {
+    private home_btnCallback(evt: egret.TouchEvent) {
+        this.commonCallback(evt, GameEvent.GAME_HIT);
+    }
 
+    private commonCallback(evt: egret.TouchEvent, type: string):void {
+        
+        let curX = evt.currentTarget.scaleX;
+        let curY = evt.currentTarget.scaleY;
+
+        if (evt.type == egret.TouchEvent.TOUCH_BEGIN) {
+            curX = 1.05;
+            curY = 1.05;
+        } else if (evt.type == egret.TouchEvent.TOUCH_END) {
+            curX = 1.0;
+            curY = 1.0;
+            let event: GameEvent = new GameEvent(type);
+            this.dispatchEvent(event);
+        } else {
+            curX = 1.0;
+            curY = 1.0;
+        }
     }
 
     private commonImgConf(name: string, x: number, y:number, callback: Function) {
