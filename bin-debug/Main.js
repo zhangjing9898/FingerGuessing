@@ -159,6 +159,18 @@ var Main = (function (_super) {
         // 创建结果页
         var layer = new OverScene();
         this.addChild(layer);
+        // 接收事件
+        layer.addEventListener(GameEvent.GAME_CONTINUE, this.go, this);
+        layer.addEventListener(GameEvent.GAME_RANK, this.rank, this);
+        layer.addEventListener(GameEvent.GAME_HIT, this.goHome, this);
+    };
+    // 点击rank图标后，要做的事
+    Main.prototype.rank = function () {
+    };
+    // 点击回到首页按钮后，要做的事
+    Main.prototype.goHome = function () {
+        this.removeChildren();
+        this.createGameScene();
     };
     Main.prototype.startRank = function () {
         console.log('进入排行榜！');
