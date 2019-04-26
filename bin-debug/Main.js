@@ -141,7 +141,7 @@ var Main = (function (_super) {
         var startScene = new StartScene();
         this.addChild(startScene);
         startScene.addEventListener(GameEvent.GAME_GO, this.go, this);
-        startScene.addEventListener(GameEvent.GAME_BLEED, this.startRank, this);
+        startScene.addEventListener(GameEvent.GAME_BLEED, this.rank, this);
     };
     // 进入游戏
     Main.prototype.go = function () {
@@ -166,16 +166,15 @@ var Main = (function (_super) {
     };
     // 点击rank图标后，要做的事
     Main.prototype.rank = function () {
+        this.removeChildren();
+        var layer = new RankScene();
+        this.addChild(layer);
+        // TODO: 接收game-start事件
     };
     // 点击回到首页按钮后，要做的事
     Main.prototype.goHome = function () {
         this.removeChildren();
         this.createGameScene();
-    };
-    Main.prototype.startRank = function () {
-        console.log('进入排行榜！');
-        // 手动回收侦听器
-        this.removeEventListener(GameEvent.GAME_BLEED, this.startRank, this);
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。

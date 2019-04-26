@@ -90,7 +90,7 @@ class Main extends egret.DisplayObjectContainer {
         let startScene = new StartScene();
         this.addChild(startScene);
         startScene.addEventListener(GameEvent.GAME_GO, this.go, this);
-        startScene.addEventListener(GameEvent.GAME_BLEED, this.startRank, this);
+        startScene.addEventListener(GameEvent.GAME_BLEED, this.rank, this);
     }
 
     // 进入游戏
@@ -118,18 +118,16 @@ class Main extends egret.DisplayObjectContainer {
 
     // 点击rank图标后，要做的事
     private rank() {
-
+        this.removeChildren();
+        const layer = new RankScene();
+        this.addChild(layer);
+        // TODO: 接收game-start事件
     }
 
     // 点击回到首页按钮后，要做的事
     private goHome() {
         this.removeChildren();
         this.createGameScene();
-    }
-    private startRank() {
-        console.log('进入排行榜！');
-        // 手动回收侦听器
-        this.removeEventListener(GameEvent.GAME_BLEED, this.startRank, this);
     }
 
     /**

@@ -21,7 +21,22 @@ class RankScene extends egret.Sprite {
         const bg = new egret.Bitmap();
         bg.texture = RES.getRes("bg_png");
         this.addChild(bg);
-        bg.height = stageH;        
+        bg.height = stageH;  
+        
+        this.commonTxt(50, true, 50);
+        this.commonTxt(30, false, 120, 100);
+    }
+    // typescript中参数名后加一个? 代表这个参数可以不传 
+    private commonTxt(size: number ,isCenter: boolean, y: number, x?: number) {
+        const txt = new egret.TextField();
+        txt.width = egret.MainContext.instance.stage.stageWidth;
+        this.addChild(txt);
+        txt.y = y;
+        if (x) txt.x = x;
+        txt.textAlign = isCenter == true ? egret.HorizontalAlign.CENTER : egret.HorizontalAlign.LEFT;
+        txt.size = size;
+        txt.textColor = 0x00ff00;
+        txt.text = "排行榜(前十)";
     }
 
 }
