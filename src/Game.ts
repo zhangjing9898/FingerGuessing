@@ -42,11 +42,21 @@ class Game extends egret.Sprite {
         this.addChild(score_txt);
         this.score_txt = score_txt;
 
-        // TODO: add timerPanel
+        // add timerPanel
         let timerPanel = new TimerPanel();
         this.addChild(timerPanel);
         timerPanel.start();
-        // TODO:游戏结束面板
+        // 游戏结束面板
+        timerPanel.addEventListener(GameEvent.GAME_OVER, this.gameOver, this);
+    }
+
+    private gameOver() {
+        let key: string = "game_score";
+        let value: string = "" + this.score;
+        egret.localStorage.setItem(key, value);
+
+        let event: GameEvent = new GameEvent(GameEvent.GAME_OVER);
+        this.dispatchEvent(event);
     }
 
     // set hand related const

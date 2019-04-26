@@ -65,11 +65,19 @@ var Game = (function (_super) {
         score_txt.y = 100;
         this.addChild(score_txt);
         this.score_txt = score_txt;
-        // TODO: add timerPanel
+        // add timerPanel
         var timerPanel = new TimerPanel();
         this.addChild(timerPanel);
         timerPanel.start();
-        // TODO:游戏结束面板
+        // 游戏结束面板
+        timerPanel.addEventListener(GameEvent.GAME_OVER, this.gameOver, this);
+    };
+    Game.prototype.gameOver = function () {
+        var key = "game_score";
+        var value = "" + this.score;
+        egret.localStorage.setItem(key, value);
+        var event = new GameEvent(GameEvent.GAME_OVER);
+        this.dispatchEvent(event);
     };
     // build hand function
     Game.prototype.setHand = function () {

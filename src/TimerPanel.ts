@@ -15,17 +15,17 @@ class TimerPanel extends egret.Sprite {
         this.txt.y = 110;
         this.txt.x = 250;
         this.txt.textColor = 0xff0000;
-        this.txt.text = "45'00'";
+        this.txt.text = `${this._num}'00'`;
         this.addChild(this.txt);
     }
 
     private _timer: egret.Timer;
-    private _num = 45;
+    private _num = 8;
 
     private createTimer(){
         // 存入缓存
         let key: string = "default_time";
-        let value: string = "" + 45;
+        let value: string = "" + this._num;
         egret.localStorage.setItem(key, value);
 
         // public Timer( delay:number,repeatCount:number )delay:以毫秒为单位
@@ -37,7 +37,7 @@ class TimerPanel extends egret.Sprite {
         this._timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onTimerCom , this);
     }
 
-    private _timers = 45;
+    private _timers = this._num;
     private onTimer() {
         this._timers -= 1;
         this.txt.text = this._timers + "'00'";
@@ -54,8 +54,8 @@ class TimerPanel extends egret.Sprite {
     }
 
     public start() {
-        this.txt.text = "45'00'";
-        this._timers = 45;
+        this.txt.text = `${this._num}'00'`;
+        this._timers = this._num;
         this._timer.reset();
         this._timer.start();
     }
