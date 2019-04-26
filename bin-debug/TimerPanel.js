@@ -12,7 +12,7 @@ var TimerPanel = (function (_super) {
     __extends(TimerPanel, _super);
     function TimerPanel() {
         var _this = _super.call(this) || this;
-        _this._num = 8;
+        _this._num = 1;
         _this._timers = _this._num;
         _this.draw();
         _this.createTimer();
@@ -51,7 +51,9 @@ var TimerPanel = (function (_super) {
     TimerPanel.prototype.onTimerCom = function () {
         this.txt.text = "00'00''";
         // 结束
-        // TODO:调出结束面板
+        // 调出结束面板
+        var event = new GameEvent(GameEvent.GAME_OVER);
+        this.dispatchEvent(event);
     };
     TimerPanel.prototype.start = function () {
         this.txt.text = this._num + "'00'";

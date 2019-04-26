@@ -101,6 +101,16 @@ class Main extends egret.DisplayObjectContainer {
         this.removeChildren();
         let game = new Game();
         this.addChild(game);
+        game.addEventListener(GameEvent.GAME_OVER, this.gameOver, this);
+    }
+
+    private gameOver() {
+        console.log('game over页面');
+        this.removeChildren();
+        // 创建结果页
+        let layer = new OverScene();
+        this.addChild(layer);
+
     }
 
     private startRank() {

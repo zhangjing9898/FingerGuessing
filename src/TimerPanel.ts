@@ -20,7 +20,7 @@ class TimerPanel extends egret.Sprite {
     }
 
     private _timer: egret.Timer;
-    private _num = 8;
+    private _num = 1;
 
     private createTimer(){
         // 存入缓存
@@ -50,7 +50,9 @@ class TimerPanel extends egret.Sprite {
     private onTimerCom() {
         this.txt.text = "00'00''";
         // 结束
-        // TODO:调出结束面板
+        // 调出结束面板
+        let event: GameEvent = new GameEvent(GameEvent.GAME_OVER);
+        this.dispatchEvent(event);
     }
 
     public start() {

@@ -151,6 +151,14 @@ var Main = (function (_super) {
         this.removeChildren();
         var game = new Game();
         this.addChild(game);
+        game.addEventListener(GameEvent.GAME_OVER, this.gameOver, this);
+    };
+    Main.prototype.gameOver = function () {
+        console.log('game over页面');
+        this.removeChildren();
+        // 创建结果页
+        var layer = new OverScene();
+        this.addChild(layer);
     };
     Main.prototype.startRank = function () {
         console.log('进入排行榜！');
