@@ -20,7 +20,7 @@ class TimerPanel extends egret.Sprite {
     }
 
     private _timer: egret.Timer;
-    private _num = 1;
+    private _num = 45;
 
     private createTimer(){
         // 存入缓存

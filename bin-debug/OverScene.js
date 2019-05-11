@@ -35,7 +35,7 @@ var OverScene = (function (_super) {
         var score = new egret.TextField();
         score.size = 80;
         score.text = game_score;
-        score.x = 300;
+        score.x = 250;
         score.y = 500;
         score.textColor = 0xff0000;
         this.addChild(score);

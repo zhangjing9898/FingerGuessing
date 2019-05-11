@@ -12,7 +12,7 @@ var TimerPanel = (function (_super) {
     __extends(TimerPanel, _super);
     function TimerPanel() {
         var _this = _super.call(this) || this;
-        _this._num = 1;
+        _this._num = 45;
         _this._timers = _this._num;
         _this.draw();
         _this.createTimer();
