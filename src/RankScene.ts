@@ -48,7 +48,7 @@ class RankScene extends egret.Sprite {
         txt.textAlign = isCenter == true ? egret.HorizontalAlign.CENTER : egret.HorizontalAlign.LEFT;
         txt.size = size;
         txt.textColor = 0xffffff;
-        isAssignment ? this.txt = txt : txt.text = "试玩榜"；
+        isAssignment ? this.txt = txt : txt.text = "试玩榜";
     }
 
     private onComplete(): void {

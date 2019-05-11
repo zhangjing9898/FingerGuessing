@@ -46,13 +46,13 @@ var LoadingUI = (function (_super) {
     LoadingUI.prototype.createView = function () {
         this.textField = new egret.TextField();
         this.addChild(this.textField);
-        this.textField.y = 300;
-        this.textField.width = 480;
-        this.textField.height = 100;
+        this.textField.anchorOffsetY = this.textField.textHeight / 2;
+        this.textField.y = GameData.getStageHeight() / 2;
+        this.textField.width = GameData.getStageWidth();
         this.textField.textAlign = "center";
     };
     LoadingUI.prototype.onProgress = function (current, total) {
-        this.textField.text = "Loading..." + current + "/" + total;
+        this.textField.text = "\u6B63\u5728\u52A0\u8F7D\u4E2D..." + current + "/" + total;
     };
     return LoadingUI;
 }(egret.Sprite));
