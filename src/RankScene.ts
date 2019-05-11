@@ -22,13 +22,13 @@ class RankScene extends egret.Sprite {
         this.addChild(bg);
         bg.height = stageH;
 
-        this.commonTxt(50, true, 50);
-        this.commonTxt(30, false, 120, 100);
+        this.commonTxt(50, true, false, 50);
+        this.commonTxt(30, false, true, 120, 100);
 
         this.onComplete();
     }
     // typescript中参数名后加一个? 代表这个参数可以不传 
-    private commonTxt(size: number, isCenter: boolean, y: number, x?: number) {
+    private commonTxt(size: number, isCenter: boolean, isAssignment: boolean ,y: number, x?: number) {
         const txt = new egret.TextField();
         txt.width = egret.MainContext.instance.stage.stageWidth;
         this.addChild(txt);
@@ -37,6 +37,7 @@ class RankScene extends egret.Sprite {
         txt.textAlign = isCenter == true ? egret.HorizontalAlign.CENTER : egret.HorizontalAlign.LEFT;
         txt.size = size;
         txt.textColor = 0xffffff;
+        isAssignment ? this.txt = txt : txt.text = "试玩榜"；
     }
 
     private onComplete(): void {
@@ -57,9 +58,7 @@ class RankScene extends egret.Sprite {
         // 采用js解析方法
         let res = eval("("+data.toString()+")");
         let value = res.data.array || '';
-        if(value.length === 0){
-            this.txt.text = "还没有排行，快来参与吧";
-        }else{
+        if(value.length > 0){
 			for(var i = 0; i < value.length; i++){
                 if(value.length < 10){
                     var rank_num = new egret.TextField();
