@@ -24,7 +24,18 @@ class RankScene extends egret.Sprite {
 
         this.commonTxt(50, true, false, 50);
         this.commonTxt(30, false, true, 120, 100);
-
+        // 添加back home 按钮
+        let homeBtn = new egret.Bitmap();
+        homeBtn.texture = RES.getRes("back_png");
+        this.addChild(homeBtn);
+        homeBtn.anchorOffsetX = homeBtn.width/2;
+        homeBtn.anchorOffsetY = homeBtn.height/2;
+        homeBtn.x = stageW/2;
+        homeBtn.y = stageH * 0.76;
+        homeBtn.touchEnabled = true;
+        homeBtn.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.homeBtnCallback, this);
+        homeBtn.addEventListener(egret.TouchEvent.TOUCH_END, this.homeBtnCallback, this);
+        homeBtn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE, this.homeBtnCallback, this);
         this.onComplete();
     }
     // typescript中参数名后加一个? 代表这个参数可以不传 
@@ -89,6 +100,21 @@ class RankScene extends egret.Sprite {
                     tscore.text = value[i].score;
                 }
 			}
+        }
+    }
+
+    private homeBtnCallback(evt: egret.TouchEvent): void {
+        if(evt.type == egret.TouchEvent.TOUCH_BEGIN){
+            evt.currentTarget.scaleX = 1.05;
+            evt.currentTarget.scaleY = 1.05;
+        }else if(evt.type == egret.TouchEvent.TOUCH_END){
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
+            var event:GameEvent = new GameEvent(GameEvent.GAME_START);
+            this.dispatchEvent(event);
+        }else if(evt.type == egret.TouchEvent.TOUCH_RELEASE_OUTSIDE){
+            evt.currentTarget.scaleX = 1.0;
+            evt.currentTarget.scaleY = 1.0;
         }
     }
 }

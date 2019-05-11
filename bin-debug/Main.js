@@ -169,7 +169,8 @@ var Main = (function (_super) {
         this.removeChildren();
         var layer = new RankScene();
         this.addChild(layer);
-        // TODO: 接收game-start事件
+        // 接收game-start事件
+        layer.addEventListener(GameEvent.GAME_START, this.goHome, this);
     };
     // 点击回到首页按钮后，要做的事
     Main.prototype.goHome = function () {
